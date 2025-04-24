@@ -61,6 +61,9 @@ class QBinMultiEditor extends QBinEditorBase {
             if (files.length > 0) {
                 const file = files[0];
                 this.handleUpload(file, file.type);
+                if (file.type.includes("text/")) {
+                    this.appendTextContent(file);
+                }
             }
         });
         // 文件上传区域
@@ -78,8 +81,23 @@ class QBinMultiEditor extends QBinEditorBase {
             if (e.target.files.length > 0) {
                 const file = e.target.files[0];
                 this.handleUpload(file, file.type);
+                if (file.type.includes("text/")) {
+                    this.appendTextContent(file);
+                }
             }
         });
+    }
+
+    appendTextContent(file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const textContent = event.target.result;
+            this.setEditorContent(this.getEditorContent() + textContent);
+        };
+        reader.onerror = () => {
+            console.error("读取文件内容时出错");
+        };
+        reader.readAsText(file);
     }
 }
 new QBinMultiEditor();
