@@ -387,14 +387,14 @@ class QBinMDEditor extends QBinEditorBase {
             themeToApply = userPreference;
         }
         
-        // Let the editor handle the theme change
         if (window.cherry && window.cherry.setTheme) {
             // Store original theme value
             const originalTheme = localStorage.getItem('qbin-theme');
             
             // Apply the theme
             window.cherry.setTheme(themeToApply);
-            
+            window.cherry.setCodeBlockTheme(`one-${themeToApply}`);
+
             // Restore "system" if that was the original preference
             if (originalTheme === 'system') {
                 localStorage.setItem('qbin-theme', 'system');

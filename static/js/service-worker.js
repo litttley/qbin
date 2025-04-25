@@ -4,7 +4,7 @@
  */
 
 // 缓存配置
-const CACHE_VERSION = 'v1.56';
+const CACHE_VERSION = 'v1.57';
 const STATIC_CACHE_NAME = `qbin-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `qbin-dynamic-${CACHE_VERSION}`;
 const CDN_CACHE_NAME = `qbin-cdn-${CACHE_VERSION}`;
@@ -40,7 +40,7 @@ const STATIC_RESOURCES = [
 // CDN资源
 const CDN_RESOURCES = [
     'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/',
-    'https://cdn.jsdelivr.net/npm/cherry-markdown@0.8.58/dist/',
+    'https://cdn.jsdelivr.net/npm/cherry-markdown@0.9.1/dist/',
     'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/',
     'https://cdn.jsdelivr.net/npm/echarts@4.6.0/dist/',
     'https://cdn.jsdelivr.net/npm/mermaid@8.11.1/dist/',
@@ -529,8 +529,8 @@ async function preCacheCriticalCdnResources() {
     try {
         const cdnCache = await caches.open(CDN_CACHE_NAME);
         const criticalCdnResources = [
-            'https://cdn.jsdelivr.net/npm/cherry-markdown@0.8.58/dist/cherry-markdown.core.js',
-            'https://cdn.jsdelivr.net/npm/cherry-markdown@0.8.58/dist/cherry-markdown.min.css',
+            'https://cdn.jsdelivr.net/npm/cherry-markdown@0.9.1/dist/cherry-markdown.core.js',
+            'https://cdn.jsdelivr.net/npm/cherry-markdown@0.9.1/dist/cherry-markdown.min.css',
             'https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/editor/editor.main.css',
