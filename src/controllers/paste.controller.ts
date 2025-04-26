@@ -213,12 +213,13 @@ async function assembleMetadata(
   }
 
   const payload = ctx.state.session?.get("user");
+  const clientIp = headers.get("cf-connecting-ip") || req.ip;
   return {
     fkey: key,
     time: getTimestamp(),
     expire: getTimestamp() +
       ~~(headers.get("x-expire") ?? "315360000"),
-    ip: req.ip,
+    ip: clientIp,
     content,
     mime,
     len,
