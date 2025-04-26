@@ -107,7 +107,6 @@ export async function remove(ctx: Context<AppState>) {
   //   await kv.set([PASTE_STORE, key], meta)
   //   await repo.update(key, {expire: meta.expire});
   // });
-
   return new Response(ctx, 200, ResponseMessages.SUCCESS);
 }
 
