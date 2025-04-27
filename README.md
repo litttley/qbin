@@ -136,6 +136,12 @@ docker run -it -p 8000:8000 \
   </table>
 </a>
 
+1. Fork 本项目  
+2. 创建新分支：`git checkout -b feature/amazing-feature`  
+3. 提交更改：`git commit -m "Add amazing feature"`  
+4. 推送分支：`git push origin feature/amazing-feature`  
+5. 发起 Pull Request，等待合并
+
 ## ❤ 赞助支持
 
 如果 QBin 帮到您或贵团队，欢迎通过[爱发电](https://afdian.com/a/naihe)进行赞助，助力项目持续更新与优化！
