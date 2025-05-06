@@ -492,3 +492,73 @@
         height: 40px; /* 增大触摸目标 */
     }
 }
+
+/* 输入框组样式，允许元素在输入框内部 */
+.input-group {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+/* 生成按钮样式 */
+.input-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--input-button-color, var(--social-link-color));
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.input-button:hover {
+    background: var(--input-button-hover-bg, rgba(0, 0, 0, 0.05));
+    color: var(--input-button-hover-color, var(--social-link-hover-color));
+    opacity: 1;
+}
+
+.input-button:active {
+    transform: translateY(-50%) scale(0.92);
+}
+
+/* 按钮点击旋转动画 */
+.input-button.rotating svg {
+    animation: rotate-refresh 0.3s ease-out;
+}
+
+@keyframes rotate-refresh {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 输入框高亮动画 */
+@keyframes highlight {
+    0%, 100% { background: var(--input-bg); }
+    50% { background: var(--input-highlight-bg, rgba(74, 108, 247, 0.1)); }
+}
+
+.highlight-input {
+    animation: highlight 0.5s ease;
+}
+
+/* 调整输入框的内边距以留出按钮空间 */
+.input-group input {
+    padding-right: 40px;
+    width: 100%;
+}
+
+/* 输入框焦点状态下按钮的效果 */
+.input-group input:focus + .input-button,
+.input-group input:focus ~ .input-button {
+    opacity: 0.9;
+    color: var(--input-button-focus-color, var(--social-link-hover-color));
+}

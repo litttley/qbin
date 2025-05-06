@@ -514,6 +514,8 @@ class QBinEditorBase {
     initializeKeyAndPasswordSync() {
         const keyInput = document.getElementById('key-input');
         const passwordInput = document.getElementById('password-input');
+        const generateKeyBtn = document.getElementById('generate-key-btn');
+        const generatePwdBtn = document.getElementById('generate-pwd-btn');
 
         // 初始化输入框值
         keyInput.value = this.currentPath.key;
@@ -530,7 +532,60 @@ class QBinEditorBase {
             }
         };
 
-        // 监听输入变化时更新水印
+        // 添加按钮旋转动画效果
+        const addRotationAnimation = (button) => {
+            button.classList.add('rotating');
+            setTimeout(() => {
+                button.classList.remove('rotating');
+            }, 600);
+        };
+
+        // 生成随机访问路径
+        const generateRandomKey = () => {
+            const newKey = API.generateKey(6);
+            keyInput.value = newKey;
+            updateURLHandler();
+            
+            // 添加动画效果
+            keyInput.classList.add('highlight-input');
+            addRotationAnimation(generateKeyBtn);
+            setTimeout(() => {
+                keyInput.classList.remove('highlight-input');
+            }, 500);
+        };
+
+        // 生成随机密码
+        const generateRandomPassword = () => {
+            // 生成8-12位包含字母数字的随机密码
+            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            const length = Math.floor(Math.random() * 5) + 8; // 8-12位
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * charset.length);
+                password += charset[randomIndex];
+            }
+            
+            passwordInput.value = password;
+            updateURLHandler();
+            
+            // 添加动画效果
+            passwordInput.classList.add('highlight-input');
+            addRotationAnimation(generatePwdBtn);
+            setTimeout(() => {
+                passwordInput.classList.remove('highlight-input');
+            }, 500);
+        };
+
+        // 为生成按钮添加点击事件
+        if (generateKeyBtn) {
+            generateKeyBtn.addEventListener('click', generateRandomKey);
+        }
+        
+        if (generatePwdBtn) {
+            generatePwdBtn.addEventListener('click', generateRandomPassword);
+        }
+
+        // 监听输入变化时更新地址栏
         keyInput.addEventListener('input', updateURLHandler);
         passwordInput.addEventListener('input', updateURLHandler);
 
