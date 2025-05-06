@@ -202,9 +202,15 @@ class QBinEditorBase {
     async handleUpload(content, mimetype, isSuccess = true) {
         if (this.isUploading) return;
         if (!content) return;
-        const isFile = ! mimetype.includes("text/");
+
+        const isFile = !mimetype.includes("text/");
         let statusMessage = "保存中…";
         let statusType = "loading";
+
+        // Get upload UI elements once
+        const uploadIcon = document.querySelector('.upload-icon');
+        const uploadText = document.querySelector('.upload-text');
+
         if (isFile) {
             const fileSize = content.size / 1024;
             const sizeText = fileSize < 1024 ?
@@ -214,6 +220,14 @@ class QBinEditorBase {
         }
 
         this.updateUploadStatus(statusMessage, statusType);
+        // Set upload UI to loading state for large files
+        let isUploadIconLoading = false;
+        if (isFile && content.size > 1024 * 1024) {
+            document.querySelector('.upload-icon').innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\"><g fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><path stroke-dasharray=\"2 4\" stroke-dashoffset=\"6\" d=\"M12 21c-4.97 0 -9 -4.03 -9 -9c0 -4.97 4.03 -9 9 -9\"><animate attributeName=\"stroke-dashoffset\" dur=\"0.3s\" repeatCount=\"indefinite\" values=\"6;0\"/></path><path stroke-dasharray=\"32\" stroke-dashoffset=\"32\" d=\"M12 3c4.97 0 9 4.03 9 9c0 4.97 -4.03 9 -9 9\"><animate fill=\"freeze\" attributeName=\"stroke-dashoffset\" begin=\"0.05s\" dur=\"0.2s\" values=\"32;0\"/></path><path stroke-dasharray=\"10\" stroke-dashoffset=\"10\" d=\"M12 16v-7.5\"><animate fill=\"freeze\" attributeName=\"stroke-dashoffset\" begin=\"0.25s\" dur=\"0.1s\" values=\"10;0\"/></path><path stroke-dasharray=\"6\" stroke-dashoffset=\"6\" d=\"M12 8.5l3.5 3.5M12 8.5l-3.5 3.5\"><animate fill=\"freeze\" attributeName=\"stroke-dashoffset\" begin=\"0.35s\" dur=\"0.1s\" values=\"6;0\"/></path></g></svg>";
+            document.querySelector('.upload-text').textContent = "正在处理，请稍候...";
+            isUploadIconLoading = true;
+        }
+
         try {
             this.isUploading = true;
             const keyInput = document.getElementById('key-input');
@@ -222,12 +236,6 @@ class QBinEditorBase {
             const action = this.currentPath.key === key ? "replaceState" : "pushState";
             const pwd = passwordInput.value.trim();
             const chash = cyrb53(content);
-
-            // Add visual loading indicator to editor for large files
-            if (isFile && content.size > 1024 * 1024) {
-                document.querySelector('.upload-icon').innerHTML = "⏳";
-                document.querySelector('.upload-text').textContent = "正在处理，请稍候...";
-            }
 
             const success = await API.uploadContent(content, key, pwd, mimetype);
             if (success) {
@@ -268,8 +276,8 @@ class QBinEditorBase {
             this.isUploading = false;
 
             // Reset upload button if needed
-            if (isFile && document.querySelector('.upload-icon').innerHTML === "⏳") {
-                document.querySelector('.upload-icon').innerHTML = "📁";
+            if (isFile && isUploadIconLoading) {
+                document.querySelector('.upload-icon').innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\"><mask id=\"lineMdFolderArrowUp0\"><g fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><path stroke-dasharray=\"64\" stroke-dashoffset=\"64\" d=\"M12 7h8c0.55 0 1 0.45 1 1v10c0 0.55 -0.45 1 -1 1h-16c-0.55 0 -1 -0.45 -1 -1v-11Z\"><animate fill=\"freeze\" attributeName=\"stroke-dashoffset\" dur=\"0.3s\" values=\"64;0\"/></path><path d=\"M12 7h-9v0c0 0 0.45 0 1 0h6z\" opacity=\"0\"><animate fill=\"freeze\" attributeName=\"d\" begin=\"0.3s\" dur=\"0.1s\" values=\"M12 7h-9v0c0 0 0.45 0 1 0h6z;M12 7h-9v-1c0 -0.55 0.45 -1 1 -1h6z\"/><set fill=\"freeze\" attributeName=\"opacity\" begin=\"0.3s\" to=\"1\"/></path><path fill=\"#000\" fill-opacity=\"0\" stroke=\"none\" d=\"M19 13c3.31 0 6 2.69 6 6c0 3.31 -2.69 6 -6 6c-3.31 0 -6 -2.69 -6 -6c0 -3.31 2.69 -6 6 -6Z\"><set fill=\"freeze\" attributeName=\"fill-opacity\" begin=\"0.4s\" to=\"1\"/></path><path stroke-dasharray=\"6\" stroke-dashoffset=\"6\" d=\"M19 21v-5\"><animate fill=\"freeze\" attributeName=\"stroke-dashoffset\" begin=\"0.4s\" dur=\"0.1s\" values=\"6;0\"/></path><path stroke-dasharray=\"4\" stroke-dashoffset=\"4\" d=\"M19 16l2 2M19 16l-2 2\"><animate fill=\"freeze\" attributeName=\"stroke-dashoffset\" begin=\"0.5s\" dur=\"0.1s\" values=\"4;0\"/></path></g></mask><rect width=\"24\" height=\"24\" fill=\"currentColor\" mask=\"url(#lineMdFolderArrowUp0)\"/></svg>";
                 document.querySelector('.upload-text').textContent = "Ctrl+V或拖放上传";
             }
 
