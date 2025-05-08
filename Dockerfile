@@ -27,7 +27,7 @@ FROM denoland/deno:2.3.1
 ENV DB_CLIENT=sqlite
 ENV SQLITE_URL="file:/app/data/qbin_local.db"
 
-# 把种子文件存到 /app/seed，稍后可能要复制
+# 把种子文件存到 /app/seed
 COPY --from=build /app/data/qbin_local.db /app/seed/qbin_local.db
 COPY --from=build /app /app
 

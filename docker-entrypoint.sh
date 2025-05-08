@@ -1,11 +1,11 @@
 #!/bin/sh
 set -e
 
-# 1. 修正挂载目录权限
+# 修正挂载目录权限
 mkdir -p /app/data
 chown -R deno:deno /app/data
 
-# 2. 第一次启动时复制种子数据库（如果你需要）
+# 第一次启动时复制种子数据库
 if [ ! -f /app/data/qbin_local.db ]; then
   echo "数据库文件不存在，正在从初始化备份中复制..."
   cp /app/seed/qbin_local.db /app/data/qbin_local.db
@@ -15,8 +15,4 @@ else
     echo "检测到已存在的数据库文件，使用现有数据库..."
 fi
 
-# 3. 切换到 deno 用户运行原来命令
-exec su-exec deno deno run -NER \
-  --allow-ffi --allow-sys \
-  --unstable-kv --unstable-broadcast-channel \
-  index.ts
+exec deno run -NER --allow-ffi --allow-sys --unstable-kv --unstable-broadcast-channel index.ts "$@"
