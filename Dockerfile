@@ -3,7 +3,7 @@ FROM denoland/deno:2.3.1 AS build
 
 ARG DB_CLIENT=sqlite
 ENV DB_CLIENT=${DB_CLIENT}
-ENV DATABASE_URL="file:/app/src/qbin_local.db"
+ENV DATABASE_URL="file:/app/data/qbin_local.db"
 
 WORKDIR /app
 COPY . .
@@ -26,7 +26,7 @@ FROM denoland/deno:2.3.1
 WORKDIR /app
 
 ENV DB_CLIENT=sqlite
-ENV DATABASE_URL="file:/app/src/qbin_local.db"
+ENV DATABASE_URL="file:/app/data/qbin_local.db"
 
 COPY --from=build /app /app
 
