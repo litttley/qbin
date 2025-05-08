@@ -29,9 +29,11 @@ ENV SQLITE_URL="file:/app/data/qbin_local.db"
 
 WORKDIR /app
 COPY --from=build /app /app
-RUN mkdir -p /app/data && chown -R deno:deno /app
 
-USER deno
+USER root                                     # 先切到 root
+RUN mkdir -p /app/data && chown -R deno:deno /app/data
+USER deno                                     # 再切回非 root
+
 WORKDIR /app
 
 EXPOSE 8000
