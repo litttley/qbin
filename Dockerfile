@@ -32,13 +32,10 @@ WORKDIR /app
 ENV DB_CLIENT=sqlite
 ENV DATABASE_URL="file:/app/data/qbin_local.db"
 
-RUN mkdir -p /app/data
-
 COPY --from=build /app /app
 
 # 验证数据库文件是否存在（调试用）
-RUN ls -la /app/data && \
-    echo "Database location: $DATABASE_URL" \
+RUN ls -la /app/data
 
 # 确保运行时所有目录都有正确的权限
 RUN chown -R deno:deno /app
