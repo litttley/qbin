@@ -15,9 +15,7 @@ RUN mkdir -p node_modules/.deno && \
 RUN deno cache index.ts
 
 # 执行sqlite数据库初始化任务
-RUN mkdir -p /app/data && \
-    chown -R deno:deno /app/data && \
-    sed -i -e 's/"deno"/"no-deno"/' node_modules/@libsql/client/package.json && \
+RUN sed -i -e 's/"deno"/"no-deno"/' node_modules/@libsql/client/package.json && \
     deno task db:generate && \
     deno task db:migrate  && \
     deno task db:push     && \
