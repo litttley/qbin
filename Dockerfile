@@ -8,9 +8,7 @@ ENV SQLITE_URL="file:/app/data/qbin_local.db"
 WORKDIR /app
 COPY . .
 
-RUN mkdir -p node_modules/.deno && \
-    chown -R deno:deno /app
-
+RUN mkdir -p node_modules/.deno
 # 预先缓存依赖
 RUN deno cache index.ts
 
@@ -29,9 +27,7 @@ ENV SQLITE_URL="file:/app/data/qbin_local.db"
 
 WORKDIR /app
 COPY --from=build /app /app
-RUN chown -R deno:deno /app
 
-USER deno
 WORKDIR /app
 
 EXPOSE 8000
