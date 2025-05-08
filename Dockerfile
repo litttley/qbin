@@ -9,6 +9,7 @@ WORKDIR /app
 COPY . .
 
 RUN mkdir -p node_modules/.deno && \
+    mkdir -p data/ && \
     chown -R deno:deno /app
 
 # 预先缓存依赖
