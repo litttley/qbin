@@ -33,8 +33,6 @@ COPY --from=build /app /app
 # 确保运行时所有目录都有正确的权限
 RUN chown -R deno:deno /app
 
-VOLUME ["/app/src"]
-
 EXPOSE 8000
 USER deno
 CMD ["run", "-NER", "--allow-ffi", "--allow-sys", "--unstable-kv", "--unstable-broadcast-channel", "index.ts"]
