@@ -32,5 +32,7 @@ COPY --from=build /app /app
 RUN mkdir -p /app/data && chown -R deno:deno /app
 
 USER deno
+WORKDIR /app
+
 EXPOSE 8000
 CMD ["run", "-NER", "--allow-ffi", "--allow-sys", "--unstable-kv", "--unstable-broadcast-channel", "index.ts"]
