@@ -22,9 +22,6 @@ RUN mkdir -p /app/data && \
     deno task db:push     && \
     sed -i -e 's/"no-deno"/"deno"/' node_modules/@libsql/client/package.json
 
-RUN ls -la /app/data && \
-    echo "Database location: $DATABASE_URL" \
-
 # ──────── runtime stage ───────────────────
 FROM denoland/deno:2.3.1
 WORKDIR /app
@@ -33,9 +30,6 @@ ENV DB_CLIENT=sqlite
 ENV DATABASE_URL="file:/app/data/qbin_local.db"
 
 COPY --from=build /app /app
-
-# 验证数据库文件是否存在（调试用）
-RUN ls -la /app/data
 
 # 确保运行时所有目录都有正确的权限
 RUN chown -R deno:deno /app
