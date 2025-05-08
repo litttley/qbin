@@ -15,4 +15,5 @@ else
     echo "检测到已存在的数据库文件，使用现有数据库..."
 fi
 
+cd /app
 exec deno run -NER --allow-ffi --allow-sys --unstable-kv --unstable-broadcast-channel index.ts "$@"
