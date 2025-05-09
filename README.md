@@ -9,7 +9,7 @@
 
 <!-- SHIELD GROUP -->
 
-[![][docker-pulls-shield]][deno-link]
+[![][docker-pulls-shield]][docker-pulls-link]
 [![][deno-shield]][deno-link]
 [![][latest-version-shield]][latest-version-link]
 [![][github-stars-shield]][github-stars-link]
