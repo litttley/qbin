@@ -29,7 +29,6 @@ class QBinMDEditor extends QBinEditorBase {
                 ];
             config.toolbarRight = ['mySettings', 'togglePreview', 'undo', 'redo', ];
             config.sidebar = null;
-            config.float = false;
             config.bubble = false;
         }else {
             config.toolbar = [
