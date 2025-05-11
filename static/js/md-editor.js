@@ -57,7 +57,7 @@ class QBinMDEditor extends QBinEditorBase {
                     'redo',
                     'export',
                 ];
-            config.toolbarRight = ['mySettings', 'togglePreview', 'wordCount'];
+            config.toolbarRight = ['mySettings', 'togglePreview', 'shortcutKey', 'wordCount'];
             config.bubble = ['bold', 'italic', 'underline', 'strikethrough', 'sub', 'sup', 'quote', '|', 'size', 'color'];
             config.sidebar = null;
         }
@@ -86,6 +86,7 @@ class QBinMDEditor extends QBinEditorBase {
                 mySettings: customSettings,
             },
             toc: true,
+            float: false,
         };
 
         // TODO 实现sidebar Zen模式
