@@ -669,7 +669,7 @@ class QBinViewer {
         // Create a mermaid rendering container
         const mermaidContainer = document.createElement('div');
         mermaidContainer.id = 'mermaid-container';
-        // mermaidContainer.style = 'width:1024px;height:0;visibility:hidden;position:absolute;pointer-events:none;';
+        mermaidContainer.style = 'width:1024px;height:0;visibility:hidden;position:absolute;pointer-events:none;';
         document.body.appendChild(mermaidContainer);
 
         // Configure Mermaid 10.x
@@ -759,13 +759,7 @@ class QBinViewer {
 
                         const code = mermaidEl.textContent;
                         window.mermaid.render(id, code).then(result => {
-                            // Convert SVG to image for Cherry
-                            const svgContent = result.svg;
-                            const encodedSvg = encodeURIComponent(svgContent);
-                            const imgTag = `<img src="data:image/svg+xml;charset=utf-8,${encodedSvg}" class="mermaid-img" alt="Mermaid Diagram">`;
-
-                            // Store in cache and update placeholders
-                            this.handleRenderComplete(id, imgTag);
+                            this.handleRenderComplete(id, result.svg);
                         }).catch(error => {
                             console.error('Mermaid rendering error:', error);
                             this.handleRenderComplete(id, `<div class="cherry-code-block-error">Mermaid error: ${error.message || 'Unknown error'}</div>`);
