@@ -2,6 +2,7 @@ class QBinMultiEditor extends QBinEditorBase {
     constructor() {
         super();
         this.currentEditor = "multi";
+        this.contentType = "text/plain; charset=UTF-8";
         this.initialize();
     }
 
