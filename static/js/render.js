@@ -10,6 +10,7 @@ class QBinViewer {
         this.lastScrollY = 0;
         this.scrollThreshold = 20;
         this.ticking = false;
+        this.currentTheme = this.getThemePreference();
         this.edit = 'e';
         this.init();
         this.initScrollHandler();
@@ -43,20 +44,20 @@ class QBinViewer {
         this.ticking = false;
     }
 
+    getThemePreference() {
+        const savedTheme = localStorage.getItem('qbin-theme') || 'system';
+        if (savedTheme === 'dark') return 'dark';
+        if (savedTheme === 'light') return 'light';
+        // System preference:
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ?
+            'dark' : 'light';
+    }
+
     initViewer(content, contentType) {
         if (window.cherry) {
             window.cherry = null;
         }
 
-        function getThemePreference() {
-            const savedTheme = localStorage.getItem('qbin-theme') || 'system';
-            if (savedTheme === 'dark') return 'dark';
-            if (savedTheme === 'light') return 'light';
-            return window.matchMedia('(prefers-color-scheme: dark)').matches ?
-                'dark' : 'light';
-        }
-
-        const currentTheme = getThemePreference();
         if (contentType.startsWith("text/plain")) {
             const cherryConfig = {
                 id: 'qbin-viewer',
@@ -94,6 +95,16 @@ class QBinViewer {
                 autoScrollByHashAfterInit: false,
                 autoScrollByCursor: false,  // 禁用自动滚动
                 height: '100%',
+                event: {
+                    changeMainTheme: (theme) => {
+                        const userPreference = localStorage.getItem('qbin-theme') || 'system';
+                        if (userPreference === 'system') {
+                            localStorage.setItem('qbin-theme', 'system');
+                        }
+                        document.documentElement.classList.remove('light-theme', 'dark-theme');
+                        document.documentElement.classList.add(theme === 'dark' ? 'dark-theme' : 'light-theme');
+                    }
+                },
                 engine: {
                     global: {
                         classicBr: false,
@@ -102,7 +113,7 @@ class QBinViewer {
                     },
                 },
                 themeSettings: {
-                    mainTheme: currentTheme,
+                    mainTheme: this.currentTheme,
                     inlineCodeTheme: 'default',
                     codeBlockTheme: 'default',
                     toolbarTheme: 'default'
@@ -157,6 +168,16 @@ class QBinViewer {
                 externals: {
                     katex: window.katex, // 如果需要使用Katex的话
                 },
+                event: {
+                    changeMainTheme: (theme) => {
+                        const userPreference = localStorage.getItem('qbin-theme') || 'system';
+                        if (userPreference === 'system') {
+                            localStorage.setItem('qbin-theme', 'system');
+                        }
+                        document.documentElement.classList.remove('light-theme', 'dark-theme');
+                        document.documentElement.classList.add(theme === 'dark' ? 'dark-theme' : 'light-theme');
+                    }
+                },
                 engine: {
                     global: {
                         urlProcessor(url, srcType) {
@@ -179,7 +200,7 @@ class QBinViewer {
                     },
                 },
                 themeSettings: {
-                    mainTheme: currentTheme,
+                    mainTheme: this.currentTheme,
                     codeBlockTheme: 'default',
                 },
             };
