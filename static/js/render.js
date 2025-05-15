@@ -186,6 +186,7 @@ class QBinViewer {
             window.cherry = new Cherry(cherryConfig);
             this.contentType = contentType;
         }
+        this.setupThemeListener();
     }
 
     async init() {
@@ -1074,6 +1075,62 @@ class QBinViewer {
     hideLoading() {
         const loadingEls = this.cherryContainer.querySelectorAll('.loading-container');
         loadingEls.forEach(el => el.remove());
+    }
+
+    applyThemeBasedOnPreference() {
+        const userPreference = localStorage.getItem('qbin-theme') || 'system';
+        let themeToApply;
+
+        if (userPreference === 'system') {
+            // Apply theme based on system preference
+            themeToApply = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        } else {
+            // Apply user's explicit choice
+            themeToApply = userPreference;
+        }
+
+        if (window.cherry && window.cherry.setTheme) {
+            // Store original theme value
+            const originalTheme = localStorage.getItem('qbin-theme');
+
+            // Apply the theme
+            window.cherry.setTheme(themeToApply);
+            window.cherry.setCodeBlockTheme(`one-${themeToApply}`);
+
+            // Restore "system" if that was the original preference
+            if (originalTheme === 'system') {
+                localStorage.setItem('qbin-theme', 'system');
+            }
+        }
+    }
+
+    setupThemeListener() {
+        // Listen for system preference changes
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        mediaQuery.addEventListener('change', () => {
+            // Only react to system changes if the user preference is 'system'
+            if (localStorage.getItem('qbin-theme') === 'system' || !localStorage.getItem('qbin-theme')) {
+                this.applyThemeBasedOnPreference();
+            }
+        });
+
+        // Listen for explicit theme changes from other tabs/windows
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'qbin-theme') {
+                this.applyThemeBasedOnPreference();
+            }
+        });
+
+        // Setup the global theme toggler
+        if (!window.qbinToggleTheme) {
+            window.qbinToggleTheme = (theme) => {
+                localStorage.setItem('qbin-theme', theme);
+                this.applyThemeBasedOnPreference();
+            };
+        }
+
+        // Apply the initial theme
+        this.applyThemeBasedOnPreference();
     }
 }
 
