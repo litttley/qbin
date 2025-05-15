@@ -10,8 +10,8 @@ class QBinViewer {
         this.lastScrollY = 0;
         this.scrollThreshold = 20;
         this.ticking = false;
-        this.currentTheme = this.getThemePreference();
         this.edit = 'e';
+        this.currentTheme = this.getThemePreference();
         this.init();
         this.initScrollHandler();
     }
