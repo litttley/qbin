@@ -471,17 +471,9 @@ class QBinViewer {
         try {
             // 如果使用cherry-markdown，从实例中获取内容
             let content = '';
-            if (window.cherry) {
-                content = window.cherry.getMarkdown();
-                if (!(this.contentType?.startsWith('text/plain') || this.contentType?.includes('markdown'))) {
-                    content = content.substring(content.indexOf('\n') + 1);
-                }
-            } else {
-                // 兼容以前的方式，尝试从textarea获取内容
-                const viewer = document.getElementById('viewer');
-                if (viewer) {
-                    content = viewer.value;
-                }
+            content = window.cherry.getMarkdown();
+            if (!(this.contentType?.startsWith('text/plain') || this.contentType?.includes('markdown'))) {
+                content = content.substring(content.indexOf('\n') + 1);
             }
 
             const cacheData = {
