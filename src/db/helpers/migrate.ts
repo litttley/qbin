@@ -17,7 +17,7 @@ export async function migrateToV3( db, dialect) {
 
     return await db.db.execute(sql`
       INSERT INTO qbindbv3 (fkey,title,time,expire,ip,content,mime,len,pwd,email,uname,hash)
-      SELECT fkey,title,time,expire,ip,content,type AS mime,len,pwd,email,uname,hash
+      SELECT fkey,time,expire,ip,content,type AS mime,len,pwd,email,uname,hash
       FROM   qbindbv2
       ON CONFLICT (fkey) DO NOTHING;
     `);
