@@ -4,7 +4,6 @@ import {
   isCached,
   updateCache,
   kv,
-  memCache,
   cacheBroadcast,
   deleteCache,
 } from "../utils/cache.ts";
